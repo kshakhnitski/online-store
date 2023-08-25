@@ -1,0 +1,18 @@
+server:
+  port: 0
+  servlet:
+    context-path: /product
+
+spring:
+  application:
+    name: product-service
+
+  datasource:
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5434/product
+
+  jpa:
+    hibernate:
+      ddl-auto: update
