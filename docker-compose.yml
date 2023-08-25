@@ -12,5 +12,16 @@ services:
     volumes:
       - user-postgres-data:/var/lib/postgresql/data
 
+  product-db:
+    image: postgres:15.3
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: product
+    ports:
+      - '5434:5432'
+    volumes:
+      - product-postgres-data:/var/lib/postgresql/data
+
 volumes:
   user-postgres-data:
