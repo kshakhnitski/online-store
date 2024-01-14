@@ -4,7 +4,6 @@ import by.kshakhnitski.onelinestore.dto.CategoryCreateRequest
 import by.kshakhnitski.onelinestore.dto.CategoryUpdateRequest
 import by.kshakhnitski.onelinestore.exception.ValidationException
 import by.kshakhnitski.onelinestore.service.CategoryService
-import by.kshakhnitski.onelinestore.service.impl.CategoryServiceImpl
 import by.kshakhnitski.onelinestore.validator.categoryCreateRequestValidator
 import by.kshakhnitski.onelinestore.validator.categoryUpdateRequestValidator
 import io.ktor.http.*
@@ -13,9 +12,10 @@ import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 
 fun Routing.categoryRouting() {
-    val categoryService: CategoryService = CategoryServiceImpl()
+    val categoryService: CategoryService by inject()
     route("/categories") {
         get {
             call.respond(categoryService.getAll())

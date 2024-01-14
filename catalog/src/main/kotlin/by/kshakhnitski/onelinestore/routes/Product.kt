@@ -4,7 +4,6 @@ import by.kshakhnitski.onelinestore.dto.ProductCreateRequest
 import by.kshakhnitski.onelinestore.dto.ProductUpdateRequest
 import by.kshakhnitski.onelinestore.exception.ValidationException
 import by.kshakhnitski.onelinestore.service.ProductService
-import by.kshakhnitski.onelinestore.service.impl.ProductServiceImpl
 import by.kshakhnitski.onelinestore.validator.productCreateRequestValidator
 import by.kshakhnitski.onelinestore.validator.productUpdateRequestValidator
 import io.ktor.http.*
@@ -13,9 +12,10 @@ import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 
 fun Routing.productRouting() {
-    val productService: ProductService = ProductServiceImpl()
+    val productService: ProductService by inject()
     route("/products") {
         get {
             call.respond(productService.getAll())
