@@ -5,24 +5,23 @@ import by.kshakhnitski.onelinestore.dto.ProductDto
 import by.kshakhnitski.onelinestore.dto.ProductUpdateRequest
 import by.kshakhnitski.onelinestore.model.Category
 import by.kshakhnitski.onelinestore.model.Product
-import by.kshakhnitski.onelinestore.plugin.DatabaseSingleton
 import by.kshakhnitski.onelinestore.service.ProductService
 import io.ktor.server.plugins.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class ProductServiceImpl : ProductService {
 
-    override suspend fun getAll() = transaction(DatabaseSingleton.database) {
+    override suspend fun getAll() = transaction {
         Product.all().map { it.toProductDto() }
     }
 
-    override suspend fun getById(id: Long) = transaction(DatabaseSingleton.database) {
+    override suspend fun getById(id: Long) = transaction {
         Product.findById(id)
             ?.toProductDto()
             ?: throw NotFoundException("Product [$id] not found")
     }
 
-    override suspend fun create(createRequest: ProductCreateRequest) = transaction(DatabaseSingleton.database) {
+    override suspend fun create(createRequest: ProductCreateRequest) = transaction {
         if (Category.findById(createRequest.categoryId!!) == null) {
             throw NotFoundException("Category [${createRequest.categoryId}] not found")
         }
@@ -37,7 +36,7 @@ class ProductServiceImpl : ProductService {
     }
 
     override suspend fun update(id: Long, updateRequest: ProductUpdateRequest) =
-        transaction(DatabaseSingleton.database) {
+        transaction {
             val product = Product.findById(id) ?: throw NotFoundException("Product [$id] not found")
 
             updateRequest.categoryId?.let {
@@ -55,7 +54,7 @@ class ProductServiceImpl : ProductService {
             }.toProductDto()
         }
 
-    override suspend fun delete(id: Long) = transaction(DatabaseSingleton.database) {
+    override suspend fun delete(id: Long) = transaction {
         Product.findById(id)
             ?.delete()
             ?: throw NotFoundException("Product [$id] not found")

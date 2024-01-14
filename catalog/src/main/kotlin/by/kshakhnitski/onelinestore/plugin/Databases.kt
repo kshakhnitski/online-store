@@ -9,10 +9,6 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 
-object DatabaseSingleton {
-    lateinit var database: Database
-}
-
 fun Application.configureDatabases() {
     val config = HikariConfig().apply {
         jdbcUrl = environment.config.property("database.url").getString()
@@ -25,11 +21,9 @@ fun Application.configureDatabases() {
         validate()
     }
     val datasource = HikariDataSource(config)
+    Database.connect(datasource)
 
-    val database = Database.connect(datasource)
-    DatabaseSingleton.database = database
-
-    transaction(database) {
+    transaction {
         SchemaUtils.create(Categories, Products)
     }
 }
