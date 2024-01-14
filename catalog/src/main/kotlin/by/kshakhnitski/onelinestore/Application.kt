@@ -1,6 +1,6 @@
 package by.kshakhnitski.onelinestore
 
-import by.kshakhnitski.onelinestore.plugins.*
+import by.kshakhnitski.onelinestore.plugin.*
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {

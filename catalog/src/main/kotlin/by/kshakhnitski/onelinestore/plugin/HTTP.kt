@@ -1,4 +1,4 @@
-package by.kshakhnitski.onelinestore.plugins
+package by.kshakhnitski.onelinestore.plugin
 
 import io.ktor.http.*
 import io.ktor.server.application.*

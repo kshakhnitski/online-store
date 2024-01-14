@@ -1,4 +1,4 @@
-package by.kshakhnitski.onelinestore.plugins
+package by.kshakhnitski.onelinestore.plugin
 
 import by.kshakhnitski.onelinestore.model.Categories
 import by.kshakhnitski.onelinestore.model.Products

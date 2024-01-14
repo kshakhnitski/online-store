@@ -1,4 +1,4 @@
-package by.kshakhnitski.onelinestore.plugins
+package by.kshakhnitski.onelinestore.plugin
 
 import by.kshakhnitski.onelinestore.dto.ApiError
 import by.kshakhnitski.onelinestore.dto.ValidationApiError

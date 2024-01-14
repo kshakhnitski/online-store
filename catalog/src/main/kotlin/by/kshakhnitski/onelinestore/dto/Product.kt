@@ -1,6 +1,6 @@
 package by.kshakhnitski.onelinestore.dto
 
-import by.kshakhnitski.onelinestore.plugins.BigDecimalSerializer
+import by.kshakhnitski.onelinestore.plugin.BigDecimalSerializer
 import kotlinx.serialization.Serializable
 import java.math.BigDecimal
 
