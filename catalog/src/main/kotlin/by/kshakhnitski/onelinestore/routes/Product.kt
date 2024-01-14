@@ -2,10 +2,9 @@ package by.kshakhnitski.onelinestore.routes
 
 import by.kshakhnitski.onelinestore.dto.ProductCreateRequest
 import by.kshakhnitski.onelinestore.dto.ProductUpdateRequest
-import by.kshakhnitski.onelinestore.exception.ValidationException
 import by.kshakhnitski.onelinestore.service.ProductService
-import by.kshakhnitski.onelinestore.validator.productCreateRequestValidator
-import by.kshakhnitski.onelinestore.validator.productUpdateRequestValidator
+import by.kshakhnitski.onelinestore.validator.ProductCreateRequestValidator
+import by.kshakhnitski.onelinestore.validator.ProductUpdateRequestValidator
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.*
@@ -16,15 +15,16 @@ import org.koin.ktor.ext.inject
 
 fun Routing.productRouting() {
     val productService: ProductService by inject()
+    val productCreateRequestValidator: ProductCreateRequestValidator by inject()
+    val productUpdateRequestValidator: ProductUpdateRequestValidator by inject()
+
     route("/products") {
         get {
             call.respond(productService.getAll())
         }
         post {
             val createRequest = call.receive<ProductCreateRequest>()
-            productCreateRequestValidator.validate(createRequest).apply {
-                if (errors.isNotEmpty()) throw ValidationException(errors)
-            }
+            productCreateRequestValidator.validate(createRequest)
             call.respond(productService.create(createRequest))
         }
         get("{id}") {
@@ -36,9 +36,7 @@ fun Routing.productRouting() {
             val id = call.parameters["id"]?.toLongOrNull()
                 ?: throw BadRequestException("Product id [${call.parameters["id"]}] is not valid")
             val updateRequest = call.receive<ProductUpdateRequest>()
-            productUpdateRequestValidator.validate(updateRequest).apply {
-                if (errors.isNotEmpty()) throw ValidationException(errors)
-            }
+            productUpdateRequestValidator.validate(updateRequest)
             call.respond(productService.update(id, updateRequest))
         }
         delete("{id}") {

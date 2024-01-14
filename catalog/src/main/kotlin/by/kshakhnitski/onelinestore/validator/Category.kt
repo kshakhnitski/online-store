@@ -6,16 +6,20 @@ import io.konform.validation.Validation
 import io.konform.validation.jsonschema.maxLength
 import io.konform.validation.jsonschema.minLength
 
-val categoryCreateRequestValidator = Validation {
-    CategoryCreateRequest::name required {
-        minLength(3)
-        maxLength(255)
+class CategoryCreateRequestValidator : AbstractValidator<CategoryCreateRequest>() {
+    override val validation = Validation {
+        CategoryCreateRequest::name required {
+            minLength(3)
+            maxLength(255)
+        }
     }
 }
 
-val categoryUpdateRequestValidator = Validation {
-    CategoryUpdateRequest::name ifPresent {
-        minLength(3)
-        maxLength(255)
+class CategoryUpdateRequestValidator : AbstractValidator<CategoryUpdateRequest>() {
+    override val validation = Validation {
+        CategoryUpdateRequest::name ifPresent {
+            minLength(3)
+            maxLength(255)
+        }
     }
 }

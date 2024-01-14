@@ -2,10 +2,9 @@ package by.kshakhnitski.onelinestore.routes
 
 import by.kshakhnitski.onelinestore.dto.CategoryCreateRequest
 import by.kshakhnitski.onelinestore.dto.CategoryUpdateRequest
-import by.kshakhnitski.onelinestore.exception.ValidationException
 import by.kshakhnitski.onelinestore.service.CategoryService
-import by.kshakhnitski.onelinestore.validator.categoryCreateRequestValidator
-import by.kshakhnitski.onelinestore.validator.categoryUpdateRequestValidator
+import by.kshakhnitski.onelinestore.validator.CategoryCreateRequestValidator
+import by.kshakhnitski.onelinestore.validator.CategoryUpdateRequestValidator
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.*
@@ -16,15 +15,16 @@ import org.koin.ktor.ext.inject
 
 fun Routing.categoryRouting() {
     val categoryService: CategoryService by inject()
+    val categoryCreateRequestValidator: CategoryCreateRequestValidator by inject()
+    val categoryUpdateRequestValidator: CategoryUpdateRequestValidator by inject()
+
     route("/categories") {
         get {
             call.respond(categoryService.getAll())
         }
         post {
             val createRequest = call.receive<CategoryCreateRequest>()
-            categoryCreateRequestValidator.validate(createRequest).apply {
-                if (errors.isNotEmpty()) throw ValidationException(errors)
-            }
+            categoryCreateRequestValidator.validate(createRequest)
             call.respond(HttpStatusCode.Created, categoryService.create(createRequest))
         }
         get("{id}") {
@@ -36,9 +36,7 @@ fun Routing.categoryRouting() {
             val id = call.parameters["id"]?.toLongOrNull()
                 ?: throw BadRequestException("Category id [${call.parameters["id"]}] is not valid")
             val updateRequest = call.receive<CategoryUpdateRequest>()
-            categoryUpdateRequestValidator.validate(updateRequest).apply {
-                if (errors.isNotEmpty()) throw ValidationException(errors)
-            }
+            categoryUpdateRequestValidator.validate(updateRequest)
             call.respond(categoryService.update(id, updateRequest))
         }
         delete("{id}") {
