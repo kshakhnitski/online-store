@@ -3,6 +3,7 @@ package by.kshakhnitski.onelinestore.service.impl
 import by.kshakhnitski.onelinestore.dto.ProductCreateRequest
 import by.kshakhnitski.onelinestore.dto.ProductDto
 import by.kshakhnitski.onelinestore.dto.ProductUpdateRequest
+import by.kshakhnitski.onelinestore.model.Categories
 import by.kshakhnitski.onelinestore.model.Category
 import by.kshakhnitski.onelinestore.model.Product
 import by.kshakhnitski.onelinestore.service.ProductService
@@ -22,9 +23,7 @@ class ProductServiceImpl : ProductService {
     }
 
     override suspend fun create(createRequest: ProductCreateRequest) = transaction {
-        if (Category.findById(createRequest.categoryId!!) == null) {
-            throw NotFoundException("Category [${createRequest.categoryId}] not found")
-        }
+        checkIfCategoryExists(createRequest.categoryId!!)
 
         Product.new {
             name = createRequest.name!!
@@ -39,11 +38,7 @@ class ProductServiceImpl : ProductService {
         transaction {
             val product = Product.findById(id) ?: throw NotFoundException("Product [$id] not found")
 
-            updateRequest.categoryId?.let {
-                if (Category.findById(updateRequest.categoryId) == null) {
-                    throw NotFoundException("Category [${updateRequest.categoryId}] not found")
-                }
-            }
+            updateRequest.categoryId?.let { checkIfCategoryExists(it) }
 
             product.apply {
                 name = updateRequest.name ?: product.name
@@ -70,5 +65,11 @@ class ProductServiceImpl : ProductService {
             quantity = quantity,
             categoryId = categoryId
         )
+    }
+
+    private fun checkIfCategoryExists(id: Long) {
+        if (Category.find { Categories.id eq id }.empty()) {
+            throw NotFoundException("Category [$id] not found")
+        }
     }
 }
