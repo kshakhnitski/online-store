@@ -1,12 +1,12 @@
 package by.kshakhnitski.onelinestore.model
 
-import org.jetbrains.exposed.dao.Entity
-import org.jetbrains.exposed.dao.EntityClass
+import org.jetbrains.exposed.dao.LongEntity
+import org.jetbrains.exposed.dao.LongEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.LongIdTable
 
-class Product(id: EntityID<Long>) : Entity<Long>(id) {
-    companion object : EntityClass<Long, Product>(Products)
+class Product(id: EntityID<Long>) : LongEntity(id) {
+    companion object : LongEntityClass<Product>(Products)
 
     var name by Products.name
     var description by Products.description

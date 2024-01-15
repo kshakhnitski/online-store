@@ -3,7 +3,6 @@ package by.kshakhnitski.onelinestore.service.impl
 import by.kshakhnitski.onelinestore.dto.ProductCreateRequest
 import by.kshakhnitski.onelinestore.dto.ProductDto
 import by.kshakhnitski.onelinestore.dto.ProductUpdateRequest
-import by.kshakhnitski.onelinestore.model.Categories
 import by.kshakhnitski.onelinestore.model.Category
 import by.kshakhnitski.onelinestore.model.Product
 import by.kshakhnitski.onelinestore.model.Products
@@ -84,7 +83,7 @@ class ProductServiceImpl : ProductService {
     }
 
     private fun checkIfCategoryExists(id: Long) {
-        if (Category.find { Categories.id eq id }.empty()) {
+        if (Category.existsById(id).not()) {
             throw NotFoundException("Category [$id] not found")
         }
     }
