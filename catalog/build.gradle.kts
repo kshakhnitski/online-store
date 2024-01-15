@@ -32,6 +32,7 @@ repositories {
 }
 
 dependencies {
+    //ktor
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
@@ -39,16 +40,26 @@ dependencies {
     implementation("io.ktor:ktor-server-status-pages-jvm")
     implementation("io.ktor:ktor-server-cors-jvm")
     implementation("io.ktor:ktor-server-swagger-jvm")
-    implementation("org.postgresql:postgresql:$postgresql_driver_version")
-    implementation("io.konform:konform-jvm:$konform_version")
+    implementation("io.ktor:ktor-server-netty-jvm")
+    implementation("ch.qos.logback:logback-classic:$logback_version")
+
+    //exposed
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
+
+    //db
+    implementation("org.postgresql:postgresql:$postgresql_driver_version")
+    implementation("com.zaxxer:HikariCP:$hikari_cp_version")
+
+    //koin
     implementation("io.insert-koin:koin-ktor:$koin_version")
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
-    implementation("com.zaxxer:HikariCP:$hikari_cp_version")
-    implementation("io.ktor:ktor-server-netty-jvm")
-    implementation("ch.qos.logback:logback-classic:$logback_version")
+
+    //other
+    implementation("io.konform:konform-jvm:$konform_version")
+
+    //test
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
