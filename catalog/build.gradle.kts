@@ -27,6 +27,10 @@ application {
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
+tasks.test {
+    useJUnitPlatform()
+}
+
 repositories {
     mavenCentral()
 }
@@ -50,6 +54,7 @@ dependencies {
 
     //db
     implementation("org.postgresql:postgresql:$postgresql_driver_version")
+    testImplementation("com.h2database:h2:2.2.224")
     implementation("com.zaxxer:HikariCP:$hikari_cp_version")
 
     //koin
@@ -60,6 +65,6 @@ dependencies {
     implementation("io.konform:konform-jvm:$konform_version")
 
     //test
-    testImplementation("io.ktor:ktor-server-tests-jvm")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.1")
 }
