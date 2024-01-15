@@ -1,4 +1,4 @@
-package by.kshakhnitski.onelinestore.routes
+package by.kshakhnitski.onelinestore.route
 
 import by.kshakhnitski.onelinestore.dto.ProductCreateRequest
 import by.kshakhnitski.onelinestore.dto.ProductUpdateRequest
