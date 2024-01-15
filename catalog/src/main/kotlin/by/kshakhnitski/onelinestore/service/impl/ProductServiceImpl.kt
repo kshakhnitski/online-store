@@ -6,14 +6,30 @@ import by.kshakhnitski.onelinestore.dto.ProductUpdateRequest
 import by.kshakhnitski.onelinestore.model.Categories
 import by.kshakhnitski.onelinestore.model.Category
 import by.kshakhnitski.onelinestore.model.Product
+import by.kshakhnitski.onelinestore.model.Products
 import by.kshakhnitski.onelinestore.service.ProductService
 import io.ktor.server.plugins.*
+import org.jetbrains.exposed.sql.Op
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class ProductServiceImpl : ProductService {
 
-    override suspend fun getAll() = transaction {
-        Product.all().map { it.toProductDto() }
+    override suspend fun getAll(
+        categoryId: Long?,
+    ) = transaction {
+        Product.find {
+            Op.build {
+                val conditions = mutableListOf<Op<Boolean>>()
+
+                categoryId?.let {
+                    checkIfCategoryExists(categoryId)
+                    conditions.add(Products.categoryId eq categoryId)
+                }
+
+                conditions.reduceOrNull { acc, op -> acc and op } ?: Op.TRUE
+            }
+        }.map { it.toProductDto() }
     }
 
     override suspend fun getById(id: Long) = transaction {

@@ -5,7 +5,10 @@ import by.kshakhnitski.onelinestore.dto.ProductDto
 import by.kshakhnitski.onelinestore.dto.ProductUpdateRequest
 
 interface ProductService {
-    suspend fun getAll(): List<ProductDto>
+    suspend fun getAll(
+        categoryId: Long? = null,
+    ): List<ProductDto>
+
     suspend fun getById(id: Long): ProductDto
     suspend fun create(createRequest: ProductCreateRequest): ProductDto
     suspend fun update(id: Long, updateRequest: ProductUpdateRequest): ProductDto
