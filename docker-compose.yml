@@ -9,6 +9,7 @@ services:
     ports:
       - "5434:5432"
     volumes:
+      - ./init-scripts/postgres:/docker-entrypoint-initdb.d
       - onlineshop-data:/var/lib/postgresql/data
 
   catalog:
