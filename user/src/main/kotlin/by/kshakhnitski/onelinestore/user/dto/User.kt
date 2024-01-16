@@ -28,3 +28,14 @@ data class UserCreateRequest(
 data class UserUpdateRequest(
     val firstName: String? = null,
 )
+
+@Serializable
+data class VerifyCredentialsRequest(
+    val email: String? = null,
+    val password: String? = null
+)
+
+@Serializable
+data class VerifyCredentialsResponse(
+    val success: Boolean
+)

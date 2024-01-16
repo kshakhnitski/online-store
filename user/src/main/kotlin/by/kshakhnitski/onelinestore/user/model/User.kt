@@ -10,6 +10,8 @@ import org.jetbrains.exposed.sql.select
 class User(id: EntityID<Long>) : LongEntity(id) {
     companion object : LongEntityClass<User>(Users) {
 
+        fun findByEmail(email: String): User? = find { Users.email eq email }.firstOrNull()
+
         fun existsByEmail(email: String): Boolean {
             return Users.slice(Users.email)
                 .select { Users.email eq email }

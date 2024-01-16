@@ -2,6 +2,7 @@ package by.kshakhnitski.onelinestore.user.validator
 
 import by.kshakhnitski.onelinestore.user.dto.UserCreateRequest
 import by.kshakhnitski.onelinestore.user.dto.UserUpdateRequest
+import by.kshakhnitski.onelinestore.user.dto.VerifyCredentialsRequest
 import io.konform.validation.Validation
 import io.konform.validation.jsonschema.maxLength
 import io.konform.validation.jsonschema.minLength
@@ -30,6 +31,19 @@ class UserCreateRequestValidator : AbstractValidator<UserCreateRequest>() {
 class UserUpdateRequestValidator : AbstractValidator<UserUpdateRequest>() {
     override val validation = Validation {
         UserUpdateRequest::firstName ifPresent {
+            minLength(3)
+            maxLength(255)
+        }
+    }
+}
+
+class VerifyCredentialsRequestValidator : AbstractValidator<VerifyCredentialsRequest>() {
+    override val validation = Validation {
+        VerifyCredentialsRequest::email required {
+            minLength(3)
+            maxLength(255)
+        }
+        VerifyCredentialsRequest::password required {
             minLength(3)
             maxLength(255)
         }

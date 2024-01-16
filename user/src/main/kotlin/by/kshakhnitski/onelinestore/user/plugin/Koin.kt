@@ -4,6 +4,7 @@ import by.kshakhnitski.onelinestore.user.service.UserService
 import by.kshakhnitski.onelinestore.user.service.impl.UserServiceImpl
 import by.kshakhnitski.onelinestore.user.validator.UserCreateRequestValidator
 import by.kshakhnitski.onelinestore.user.validator.UserUpdateRequestValidator
+import by.kshakhnitski.onelinestore.user.validator.VerifyCredentialsRequestValidator
 import io.ktor.server.application.*
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
@@ -19,6 +20,7 @@ fun Application.configureKoin() {
         val validatorModule = module {
             single<UserCreateRequestValidator> { UserCreateRequestValidator() }
             single<UserUpdateRequestValidator> { UserUpdateRequestValidator() }
+            single<VerifyCredentialsRequestValidator> { VerifyCredentialsRequestValidator() }
         }
 
         modules(listOf(serviceModule, validatorModule))

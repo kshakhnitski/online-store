@@ -10,6 +10,7 @@ val konform_version: String by project
 val postgresql_driver_version: String by project
 val hikari_cp_version: String by project
 val koin_version: String by project
+val jbcrypt_version: String by project
 
 plugins {
     kotlin("jvm") version "1.9.22"
@@ -59,6 +60,7 @@ dependencies {
 
     //other
     implementation("io.konform:konform-jvm:$konform_version")
+    implementation("org.mindrot:jbcrypt:$jbcrypt_version")
 
     //test
     testImplementation("io.ktor:ktor-server-tests-jvm")
