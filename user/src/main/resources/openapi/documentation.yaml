@@ -1,0 +1,191 @@
+openapi: "3.0.3"
+info:
+  title: "online_store API"
+  description: "online_store API"
+  version: "1.0.0"
+servers:
+- url: "http://localhost:8080"
+paths:
+  /users:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/UserDto"
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/UserCreateRequest"
+        required: true
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ValidationApiError"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
+  /users/{id}:
+    delete:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "number"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "number"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
+    patch:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "number"
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/UserUpdateRequest"
+        required: true
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema: {}
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
+components:
+  schemas:
+    Instant:
+      type: "object"
+      properties: {}
+    UserDto:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        email:
+          type: "string"
+        firstName:
+          type: "string"
+        phone:
+          type: "string"
+        registrationDate:
+          $ref: "#/components/schemas/Instant"
+      required:
+      - "email"
+      - "firstName"
+      - "phone"
+      - "registrationDate"
+    UserCreateRequest:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        firstName:
+          type: "string"
+        phone:
+          type: "string"
+        password:
+          type: "string"
+    ApiError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        status:
+          type: "string"
+        message:
+          type: "string"
+      required:
+      - "status"
+      - "message"
+    ValidationErrorItem:
+      type: "object"
+      properties:
+        field:
+          type: "string"
+        message:
+          type: "string"
+      required:
+      - "field"
+      - "message"
+    ValidationApiError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        status:
+          type: "string"
+        message:
+          type: "string"
+        validationErrors:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ValidationErrorItem"
+      required:
+      - "status"
+      - "message"
+      - "validationErrors"
+    UserUpdateRequest:
+      type: "object"
+      properties:
+        firstName:
+          type: "string"

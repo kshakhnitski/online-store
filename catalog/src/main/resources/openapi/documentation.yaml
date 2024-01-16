@@ -1,0 +1,286 @@
+openapi: "3.0.3"
+info:
+  title: "online_store API"
+  description: "online_store API"
+  version: "1.0.0"
+servers:
+- url: "https://online_store"
+paths:
+  /categories:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CategoryDto"
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/CategoryCreateRequest"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CategoryDto"
+  /categories/{id}:
+    delete:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "number"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "number"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CategoryDto"
+    patch:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "number"
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/CategoryUpdateRequest"
+        required: true
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CategoryDto"
+  /products:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ProductDto"
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/ProductCreateRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDto"
+  /products/{id}:
+    delete:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "number"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "number"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDto"
+    patch:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "number"
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/ProductUpdateRequest"
+        required: true
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDto"
+components:
+  schemas:
+    CategoryDto:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        name:
+          type: "string"
+      required:
+      - "name"
+    CategoryCreateRequest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+      required:
+      - "name"
+    ApiError:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+      required:
+      - "message"
+    CategoryUpdateRequest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+    BigDecimal:
+      type: "object"
+      properties: {}
+    ProductDto:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        price:
+          $ref: "#/components/schemas/BigDecimal"
+        categoryId:
+          type: "integer"
+          format: "int64"
+      required:
+      - "name"
+      - "description"
+      - "price"
+    ProductCreateRequest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        description:
+          type: "string"
+        price:
+          $ref: "#/components/schemas/BigDecimal"
+        categoryId:
+          type: "integer"
+          format: "int64"
+      required:
+      - "name"
+      - "description"
+      - "price"
+    ProductUpdateRequest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        description:
+          type: "string"
+        price:
+          $ref: "#/components/schemas/BigDecimal"
+        categoryId:
+          type: "integer"
+          format: "int64"
