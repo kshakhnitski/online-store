@@ -3,12 +3,14 @@ package by.kshakhnitski.onelinestore.user.route
 import by.kshakhnitski.onelinestore.user.dto.UserCreateRequest
 import by.kshakhnitski.onelinestore.user.dto.UserUpdateRequest
 import by.kshakhnitski.onelinestore.user.dto.VerifyCredentialsRequest
+import by.kshakhnitski.onelinestore.user.jwt.JWTUtil
 import by.kshakhnitski.onelinestore.user.service.UserService
 import by.kshakhnitski.onelinestore.user.validator.UserCreateRequestValidator
 import by.kshakhnitski.onelinestore.user.validator.UserUpdateRequestValidator
 import by.kshakhnitski.onelinestore.user.validator.VerifyCredentialsRequestValidator
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -53,6 +55,13 @@ fun Routing.userRouting() {
                 ?: throw BadRequestException("User id [${call.parameters["id"]}] is not valid")
             userService.delete(id)
             call.respond(HttpStatusCode.NoContent)
+        }
+
+        authenticate("auth-jwt") {
+            get("me") {
+                val userId = JWTUtil.extractUserId(call.authentication)
+                call.respond(userService.getById(userId))
+            }
         }
     }
 }

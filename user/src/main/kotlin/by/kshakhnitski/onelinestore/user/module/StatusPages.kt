@@ -5,6 +5,7 @@ import by.kshakhnitski.onelinestore.user.dto.ValidationApiError
 import by.kshakhnitski.onelinestore.user.dto.ValidationErrorItem
 import by.kshakhnitski.onelinestore.user.exception.ConflictException
 import by.kshakhnitski.onelinestore.user.exception.InvalidCredentialsException
+import by.kshakhnitski.onelinestore.user.exception.JwtValidationException
 import by.kshakhnitski.onelinestore.user.exception.ValidationException
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -65,6 +66,15 @@ fun Application.configureStatusPages() {
                 status, buildApiError(
                     status = status,
                     message = cause.message ?: "Invalid Credentials"
+                )
+            )
+        }
+        exception<JwtValidationException> {call, cause ->
+            val status = HttpStatusCode.Unauthorized
+            call.respond(
+                status, buildApiError(
+                    status = status,
+                    message = cause.message ?: "JWT is not valid"
                 )
             )
         }

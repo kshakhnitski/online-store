@@ -7,3 +7,5 @@ class ValidationException(val errors: List<ValidationErrorItem>) : RuntimeExcept
 class ConflictException(message: String) : RuntimeException(message)
 
 class InvalidCredentialsException(message: String) : RuntimeException(message)
+
+class JwtValidationException(message: String) : RuntimeException(message)

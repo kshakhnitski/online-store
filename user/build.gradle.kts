@@ -42,6 +42,8 @@ dependencies {
     implementation("io.ktor:ktor-server-cors-jvm")
     implementation("io.ktor:ktor-server-swagger-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
+    implementation("io.ktor:ktor-server-auth-jvm")
+    implementation("io.ktor:ktor-server-auth-jwt-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
     //exposed
