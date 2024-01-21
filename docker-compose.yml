@@ -32,5 +32,15 @@ services:
     depends_on:
       - postgres
 
+  auth:
+    build: ./auth
+    container_name: online-store-auth
+    ports:
+      - "8083:8080"
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres/auth
+    depends_on:
+      - postgres
+
 volumes:
   onlineshop-data:

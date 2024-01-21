@@ -11,3 +11,4 @@ EOSQL
 
 create_database "catalog"
 create_database "users"
+create_database "auth"
