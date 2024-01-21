@@ -9,7 +9,7 @@ interface UserService {
     suspend fun getAll(): List<UserDto>
     suspend fun getById(id: Long): UserDto
     suspend fun create(createRequest: UserCreateRequest): UserDto
-    suspend fun verifyCredentials(verifyCredentialsRequest: VerifyCredentialsRequest): Boolean
+    suspend fun verifyCredentials(verifyCredentialsRequest: VerifyCredentialsRequest): UserDto
     suspend fun update(id: Long, updateRequest: UserUpdateRequest): UserDto
     suspend fun delete(id: Long)
 }

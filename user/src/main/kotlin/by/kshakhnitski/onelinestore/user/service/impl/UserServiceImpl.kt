@@ -5,6 +5,7 @@ import by.kshakhnitski.onelinestore.user.dto.UserDto
 import by.kshakhnitski.onelinestore.user.dto.UserUpdateRequest
 import by.kshakhnitski.onelinestore.user.dto.VerifyCredentialsRequest
 import by.kshakhnitski.onelinestore.user.exception.ConflictException
+import by.kshakhnitski.onelinestore.user.exception.InvalidCredentialsException
 import by.kshakhnitski.onelinestore.user.model.User
 import by.kshakhnitski.onelinestore.user.service.UserService
 import io.ktor.server.plugins.*
@@ -15,12 +16,12 @@ import java.time.Instant
 class UserServiceImpl : UserService {
 
     override suspend fun getAll() = transaction {
-        User.all().map { it.toProductDto() }
+        User.all().map { it.toUserDto() }
     }
 
     override suspend fun getById(id: Long) = transaction {
         User.findById(id)
-            ?.toProductDto()
+            ?.toUserDto()
             ?: throw NotFoundException("User [$id] not found")
     }
 
@@ -38,15 +39,19 @@ class UserServiceImpl : UserService {
             firstName = createRequest.firstName!!
             password = BCrypt.hashpw(createRequest.password!!, BCrypt.gensalt())
             registrationDate = Instant.now()
-        }.toProductDto()
+        }.toUserDto()
     }
 
-    override suspend fun verifyCredentials(verifyCredentialsRequest: VerifyCredentialsRequest): Boolean {
+    override suspend fun verifyCredentials(verifyCredentialsRequest: VerifyCredentialsRequest): UserDto {
         val user = transaction {
             User.findByEmail(verifyCredentialsRequest.email!!)
         } ?: throw NotFoundException("User with email [${verifyCredentialsRequest.email}] not found")
 
-        return BCrypt.checkpw(verifyCredentialsRequest.password!!, user.password)
+        if (BCrypt.checkpw(verifyCredentialsRequest.password!!, user.password).not()) {
+            throw InvalidCredentialsException("Invalid credentials")
+        }
+
+        return user.toUserDto()
     }
 
     override suspend fun update(id: Long, updateRequest: UserUpdateRequest) =
@@ -55,7 +60,7 @@ class UserServiceImpl : UserService {
 
             user.apply {
                 updateRequest.firstName?.let { this.firstName = it }
-            }.toProductDto()
+            }.toUserDto()
         }
 
     override suspend fun delete(id: Long) = transaction {
@@ -65,7 +70,7 @@ class UserServiceImpl : UserService {
         return@transaction
     }
 
-    private fun User.toProductDto(): UserDto {
+    private fun User.toUserDto(): UserDto {
         return UserDto(
             id = id.value,
             email = email,

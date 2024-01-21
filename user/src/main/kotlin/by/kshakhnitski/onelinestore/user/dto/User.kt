@@ -34,8 +34,3 @@ data class VerifyCredentialsRequest(
     val email: String? = null,
     val password: String? = null
 )
-
-@Serializable
-data class VerifyCredentialsResponse(
-    val success: Boolean
-)

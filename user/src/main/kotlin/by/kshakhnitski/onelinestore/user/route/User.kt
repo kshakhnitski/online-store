@@ -3,7 +3,6 @@ package by.kshakhnitski.onelinestore.user.route
 import by.kshakhnitski.onelinestore.user.dto.UserCreateRequest
 import by.kshakhnitski.onelinestore.user.dto.UserUpdateRequest
 import by.kshakhnitski.onelinestore.user.dto.VerifyCredentialsRequest
-import by.kshakhnitski.onelinestore.user.dto.VerifyCredentialsResponse
 import by.kshakhnitski.onelinestore.user.service.UserService
 import by.kshakhnitski.onelinestore.user.validator.UserCreateRequestValidator
 import by.kshakhnitski.onelinestore.user.validator.UserUpdateRequestValidator
@@ -29,18 +28,18 @@ fun Routing.userRouting() {
         post {
             val createRequest = call.receive<UserCreateRequest>()
             userCreateRequestValidator.validate(createRequest)
-            call.respond(userService.create(createRequest))
+            call.respond(HttpStatusCode.Created, userService.create(createRequest))
         }
-        post("/verify-credentials") {
+        post("verify-credentials") {
             val verifyCredentialsRequest = call.receive<VerifyCredentialsRequest>()
             verifyCredentialsRequestValidator.validate(verifyCredentialsRequest)
-            val success = userService.verifyCredentials(verifyCredentialsRequest)
-            call.respond(VerifyCredentialsResponse(success = success))
+            val user = userService.verifyCredentials(verifyCredentialsRequest)
+            call.respond(user)
         }
         get("{id}") {
             val id = call.parameters["id"]?.toLongOrNull()
                 ?: throw BadRequestException("User id [${call.parameters["id"]}] is not valid")
-            call.respond(HttpStatusCode.Created, userService.getById(id))
+            call.respond(userService.getById(id))
         }
         patch("{id}") {
             val id = call.parameters["id"]?.toLongOrNull()

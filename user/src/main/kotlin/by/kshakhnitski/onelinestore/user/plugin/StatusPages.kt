@@ -4,6 +4,7 @@ import by.kshakhnitski.onelinestore.user.dto.ApiError
 import by.kshakhnitski.onelinestore.user.dto.ValidationApiError
 import by.kshakhnitski.onelinestore.user.dto.ValidationErrorItem
 import by.kshakhnitski.onelinestore.user.exception.ConflictException
+import by.kshakhnitski.onelinestore.user.exception.InvalidCredentialsException
 import by.kshakhnitski.onelinestore.user.exception.ValidationException
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -32,6 +33,10 @@ fun Application.configureStatusPages() {
         exception<ValidationException> { call, cause ->
             val status = HttpStatusCode.BadRequest
             call.respond(status, buildValidationApiError(status, "Validation Error", cause))
+        }
+        exception<InvalidCredentialsException> { call, cause ->
+            val status = HttpStatusCode.Unauthorized
+            call.respond(status, buildApiError(status, "Invalid Credentials", cause))
         }
     }
 }
