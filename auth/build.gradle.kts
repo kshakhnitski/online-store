@@ -10,7 +10,6 @@ val konform_version: String by project
 val postgresql_driver_version: String by project
 val hikari_cp_version: String by project
 val koin_version: String by project
-val kjwt_version: String by project
 
 plugins {
     kotlin("jvm") version "1.9.22"
@@ -42,6 +41,8 @@ dependencies {
     implementation("io.ktor:ktor-server-cors-jvm")
     implementation("io.ktor:ktor-server-swagger-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
+    implementation("io.ktor:ktor-server-auth-jvm")
+    implementation("io.ktor:ktor-server-auth-jwt-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
     // Client
@@ -64,9 +65,6 @@ dependencies {
 
     // Validation
     implementation("io.konform:konform-jvm:$konform_version")
-
-    // JWT
-    implementation("io.github.nefilim.kjwt:kjwt-core:$kjwt_version")
 
     // Test
     testImplementation("io.ktor:ktor-server-tests-jvm")
