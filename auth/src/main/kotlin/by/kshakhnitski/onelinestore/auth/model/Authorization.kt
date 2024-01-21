@@ -23,6 +23,6 @@ class Authorization(id: EntityID<UUID>) : UUIDEntity(id) {
 
 object Authorizations : UUIDTable("authorizations") {
     val userId = varchar("user_id", 255)
-    val refreshToken = varchar("refreshToken", 255)
+    val refreshToken = varchar("refreshToken", 255).uniqueIndex()
     val expiredAt = timestamp("expired_at")
 }
