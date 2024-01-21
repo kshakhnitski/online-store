@@ -1,4 +1,4 @@
-package by.kshakhnitski.onelinestore.user.plugin
+package by.kshakhnitski.onelinestore.user.module
 
 import by.kshakhnitski.onelinestore.user.service.UserService
 import by.kshakhnitski.onelinestore.user.service.impl.UserServiceImpl

@@ -1,7 +1,9 @@
 package by.kshakhnitski.onelinestore.user.validator
 
+import by.kshakhnitski.onelinestore.user.dto.ValidationErrorItem
 import by.kshakhnitski.onelinestore.user.exception.ValidationException
 import io.konform.validation.Validation
+import io.konform.validation.ValidationError
 
 /**
  * Abstract base class for validators.
@@ -16,7 +18,14 @@ abstract class AbstractValidator<T> : Validator<T> {
 
     override fun validate(t: T) {
         validation.validate(t).run {
-            if (errors.isNotEmpty()) throw ValidationException(errors)
+            if (errors.isNotEmpty()) throw ValidationException(errors.map { it.toValidationErrorItem() })
         }
+    }
+
+    private fun ValidationError.toValidationErrorItem(): ValidationErrorItem {
+        return ValidationErrorItem(
+            field = dataPath.substring(1),
+            message = message
+        )
     }
 }

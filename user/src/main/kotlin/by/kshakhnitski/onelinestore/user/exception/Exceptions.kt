@@ -1,8 +1,8 @@
 package by.kshakhnitski.onelinestore.user.exception
 
-import io.konform.validation.ValidationErrors
+import by.kshakhnitski.onelinestore.user.dto.ValidationErrorItem
 
-class ValidationException(val errors: ValidationErrors) : RuntimeException()
+class ValidationException(val errors: List<ValidationErrorItem>) : RuntimeException()
 
 class ConflictException(message: String) : RuntimeException(message)
 

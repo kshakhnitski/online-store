@@ -1,5 +1,5 @@
 package by.kshakhnitski.onelinestore.catalog.exception
 
-import io.konform.validation.ValidationErrors
+import by.kshakhnitski.onelinestore.catalog.dto.ValidationErrorItem
 
-class ValidationException(val errors: ValidationErrors) : RuntimeException()
+class ValidationException(val errors: List<ValidationErrorItem>) : RuntimeException()

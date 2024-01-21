@@ -1,7 +1,6 @@
-package by.kshakhnitski.onelinestore.catalog
+package by.kshakhnitski.onelinestore.user.db
 
-import by.kshakhnitski.onelinestore.catalog.model.Categories
-import by.kshakhnitski.onelinestore.catalog.model.Products
+import by.kshakhnitski.onelinestore.user.model.Users
 import com.typesafe.config.ConfigFactory
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -26,16 +25,16 @@ object DatabaseFactory {
         Database.connect(hikari())
 
         transaction {
-            SchemaUtils.create(Categories, Products)
+            SchemaUtils.create(Users)
         }
     }
 
     private fun hikari(): HikariDataSource {
         val config = HikariConfig().apply {
-            jdbcUrl = this@DatabaseFactory.url
-            driverClassName = this@DatabaseFactory.driverClassName
-            username = this@DatabaseFactory.username
-            password = this@DatabaseFactory.password
+            jdbcUrl = url
+            driverClassName = DatabaseFactory.driverClassName
+            username = DatabaseFactory.username
+            password = DatabaseFactory.password
             maximumPoolSize = 10
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"

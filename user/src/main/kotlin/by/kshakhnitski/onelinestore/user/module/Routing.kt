@@ -1,4 +1,4 @@
-package by.kshakhnitski.onelinestore.user.plugin
+package by.kshakhnitski.onelinestore.user.module
 
 import by.kshakhnitski.onelinestore.user.route.userRouting
 import io.ktor.server.application.*

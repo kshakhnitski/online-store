@@ -1,4 +1,4 @@
-package by.kshakhnitski.onelinestore.catalog.plugin
+package by.kshakhnitski.onelinestore.catalog.module
 
 import by.kshakhnitski.onelinestore.catalog.route.categoryProductRouting
 import by.kshakhnitski.onelinestore.catalog.route.categoryRouting

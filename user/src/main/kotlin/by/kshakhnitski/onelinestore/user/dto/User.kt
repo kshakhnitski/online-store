@@ -2,7 +2,7 @@
 
 package by.kshakhnitski.onelinestore.user.dto
 
-import by.kshakhnitski.onelinestore.user.plugin.InstantSerializer
+import by.kshakhnitski.onelinestore.user.module.InstantSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 import java.time.Instant

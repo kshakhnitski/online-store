@@ -1,6 +1,6 @@
 package by.kshakhnitski.onelinestore.catalog
 
-import by.kshakhnitski.onelinestore.catalog.plugin.*
+import by.kshakhnitski.onelinestore.catalog.module.*
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
 fun Application.module() {
     configureKoin()
     configureSerialization()
-    configureHTTP()
+    configureSwagger()
     configureDatabases()
     configureRouting()
     configureStatusPages()

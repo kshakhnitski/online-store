@@ -1,6 +1,7 @@
-package by.kshakhnitski.onelinestore.user
+package by.kshakhnitski.onelinestore.catalog.db
 
-import by.kshakhnitski.onelinestore.user.model.Users
+import by.kshakhnitski.onelinestore.catalog.model.Categories
+import by.kshakhnitski.onelinestore.catalog.model.Products
 import com.typesafe.config.ConfigFactory
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -25,7 +26,7 @@ object DatabaseFactory {
         Database.connect(hikari())
 
         transaction {
-            SchemaUtils.create(Users)
+            SchemaUtils.create(Categories, Products)
         }
     }
 

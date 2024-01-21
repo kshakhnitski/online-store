@@ -1,4 +1,4 @@
-package by.kshakhnitski.onelinestore.user.plugin
+package by.kshakhnitski.onelinestore.catalog.module
 
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
@@ -8,17 +8,16 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializer
 import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
-import java.time.Instant
+import java.math.BigDecimal
 
 fun Application.configureSerialization() {
     install(ContentNegotiation) {
         json(contentType = ContentType.Application.Json, json = Json {
             prettyPrint = true
             serializersModule = SerializersModule {
-                contextual(Instant::class, InstantSerializer)
+                contextual(BigDecimal::class, BigDecimalSerializer)
             }
             ignoreUnknownKeys = true
         })
@@ -26,10 +25,14 @@ fun Application.configureSerialization() {
 }
 
 @OptIn(ExperimentalSerializationApi::class)
-@Serializer(forClass = Instant::class)
-object InstantSerializer : KSerializer<Instant> {
+@Serializer(forClass = BigDecimal::class)
+object BigDecimalSerializer : KSerializer<BigDecimal> {
 
-    override fun serialize(encoder: Encoder, value: Instant) = encoder.encodeString(value.toString())
+    override fun serialize(encoder: kotlinx.serialization.encoding.Encoder, value: BigDecimal) {
+        encoder.encodeString(value.toPlainString())
+    }
 
-    override fun deserialize(decoder: Decoder): Instant = Instant.parse(decoder.decodeString())
+    override fun deserialize(decoder: Decoder): BigDecimal {
+        return BigDecimal(decoder.decodeString())
+    }
 }

@@ -25,12 +25,12 @@ fun Routing.productRouting() {
         post {
             val createRequest = call.receive<ProductCreateRequest>()
             productCreateRequestValidator.validate(createRequest)
-            call.respond(productService.create(createRequest))
+            call.respond(HttpStatusCode.Created, productService.create(createRequest))
         }
         get("{id}") {
             val id = call.parameters["id"]?.toLongOrNull()
                 ?: throw BadRequestException("Product id [${call.parameters["id"]}] is not valid")
-            call.respond(HttpStatusCode.Created, productService.getById(id))
+            call.respond(productService.getById(id))
         }
         patch("{id}") {
             val id = call.parameters["id"]?.toLongOrNull()
